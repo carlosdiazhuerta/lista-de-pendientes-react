@@ -1,7 +1,8 @@
+import "./TodoSerach.css";
 function TodoSearch() {
   return (
     <>
-      <input placeholder="cortas cebollas" />
+      <input className="TodoSearch" placeholder="busca tu pendiente vago!" />
     </>
   );
 }
