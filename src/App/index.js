@@ -1,32 +1,12 @@
 import React from "react";
-import { TodoCounter } from "./TodoCounter";
-import { TodoSearch } from "./TodoSearch";
-import { TodoList } from "./TodoList";
-import { TodoItem } from "./TodoItem";
-import { CreateTodoButton } from "./CreateTodoButton";
+import { TodoCounter } from "../TodoCounter/index";
+import { TodoSearch } from "../TodoSearch/index";
+import { TodoList } from "../TodoList/index";
+import { TodoItem } from "../TodoItem/index";
+import { CreateTodoButton } from "../CreateTodoButton/index";
+import { useLocalStorage } from "./useLocalStore";
 
 // Función personalizada para manejar el almacenamiento local
-function useLocalStorage(itemName, initialValue) {
-  const localStorageItem = localStorage.getItem(itemName);
-
-  let parsedItem;
-  if (!localStorageItem) {
-    localStorage.setItem(itemName, JSON.stringify(initialValue));
-    parsedItem = initialValue;
-  } else {
-    parsedItem = JSON.parse(localStorageItem);
-  }
-
-  const [item, setItem] = React.useState(parsedItem);
-
-  // Función para guardar un nuevo item en el almacenamiento local
-  const saveItem = (newItem) => {
-    localStorage.setItem(itemName, JSON.stringify(newItem));
-    setItem(newItem);
-  };
-
-  return [item, saveItem];
-}
 
 function App() {
   // Estado para manejar la lista de tareas y función para guardarla en el almacenamiento local
@@ -50,10 +30,9 @@ function App() {
   const completeTodo = (text) => {
     const newTodos = [...todos];
     const todoIndex = newTodos.findIndex((todo) => todo.text === text);
-    newTodos[todoIndex].completed = true;
+    newTodos[todoIndex].completed = !newTodos[todoIndex].completed;
     saveTodos(newTodos);
   };
-
   // Función para eliminar una tarea
   const deleteTodo = (text) => {
     const newTodos = [...todos];
