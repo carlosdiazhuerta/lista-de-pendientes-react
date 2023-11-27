@@ -3,6 +3,9 @@ import { TodoSearch } from "../TodoSearch/index";
 import { TodoList } from "../TodoList/index";
 import { TodoItem } from "../TodoItem/index";
 import { CreateTodoButton } from "../CreateTodoButton/index";
+import { TodosLoading } from "../TodosLoding";
+import { EmptyTodos } from "../EmptyTodos";
+import { TodosError } from "../TodosError";
 
 function AppUI({
   loading,
@@ -25,11 +28,16 @@ function AppUI({
 
       {/* Componente para la lista de tareas */}
       <TodoList>
-        {loading && <p>estamos cargando...</p>}
-        {error && <>oh no tenemos un error</>}
-        {!loading && searchedTodos.length === 0 && (
-          <p>Agrega tu primer pendiente con el botón de mas.</p>
+        {loading && (
+          <>
+            <TodosLoading />
+            <TodosLoading />
+            <TodosLoading />
+          </>
         )}
+        {error && <TodosError />}
+        {!loading && searchedTodos.length === 0 && <EmptyTodos />}
+
         {searchedTodos.map((todo) => (
           <TodoItem
             key={todo.text}
