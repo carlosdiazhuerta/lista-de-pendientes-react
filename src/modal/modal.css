@@ -1,9 +1,12 @@
-.Modal {
-  position: absolute;
-  font-size: 15px;
-  text-align: left;
-  bottom: 46px;
-  left: 10px;
-  font-weight: 500;
-  position: absolute;
+.ModalBackground {
+  background-color: rgba(32, 35, 41, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }

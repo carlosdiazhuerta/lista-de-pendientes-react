@@ -8,6 +8,7 @@ import { EmptyTodos } from "../EmptyTodos";
 import { TodosError } from "../TodosError";
 import { TodoContext } from "../TodoContex";
 import { Modal } from "../modal";
+import { TodoForm } from "./TodoForm";
 import React from "react";
 
 function AppUI() {
@@ -45,7 +46,11 @@ function AppUI() {
         ))}
       </TodoList>
       <CreateTodoButton />
-      {openModal && <Modal>da click en el boton de mas.</Modal>}
+      {openModal && (
+        <Modal>
+          <TodoForm></TodoForm>
+        </Modal>
+      )}
     </>
   );
 }
