@@ -10,8 +10,8 @@ function TodoProvider({ children }) {
     loading,
     error,
   } = useLocalStorage("TODOS_V1", []);
-
   const [searchValue, setSearchValue] = React.useState("");
+  const [openModal, setOpenModal] = React.useState(true);
 
   const completedTodos = todos.filter((todo) => !!todo.completed).length;
   const totalTodos = todos.length;
@@ -22,53 +22,39 @@ function TodoProvider({ children }) {
     return todoText.includes(searchText);
   });
 
-  const completeTodo = React.useCallback(
-    (text) => {
-      saveTodos((prevTodos) => {
-        const newTodos = [...prevTodos];
-        const todoIndex = newTodos.findIndex((todo) => todo.text === text);
-        newTodos[todoIndex].completed = !newTodos[todoIndex].completed;
-        return newTodos;
-      });
-    },
-    [saveTodos]
-  );
+  const completeTodo = (text) => {
+    const newTodos = [...todos];
+    const todoIndex = newTodos.findIndex((todo) => todo.text === text);
+    newTodos[todoIndex].completed = true;
+    saveTodos(newTodos);
+  };
 
-  const deleteTodo = React.useCallback(
-    (text) => {
-      saveTodos((prevTodos) => {
-        const newTodos = [...prevTodos];
-        const todoIndex = newTodos.findIndex((todo) => todo.text === text);
-        newTodos.splice(todoIndex, 1);
-        return newTodos;
-      });
-    },
-    [saveTodos]
-  );
-
-  React.useEffect(() => {
-    // Lógica adicional si es necesaria
-  }, []);
+  const deleteTodo = (text) => {
+    const newTodos = [...todos];
+    const todoIndex = newTodos.findIndex((todo) => todo.text === text);
+    newTodos.splice(todoIndex, 1);
+    saveTodos(newTodos);
+  };
 
   return (
-    <>
-      <TodoContext.Provider
-        value={{
-          loading,
-          error,
-          completedTodos,
-          totalTodos,
-          searchValue,
-          setSearchValue,
-          searchedTodos,
-          completeTodo,
-          deleteTodo,
-        }}
-      >
-        {children}
-      </TodoContext.Provider>
-    </>
+    <TodoContext.Provider
+      value={{
+        loading,
+        error,
+        completedTodos,
+        totalTodos,
+        searchValue,
+        setSearchValue,
+        searchedTodos,
+        completeTodo,
+        deleteTodo,
+        openModal,
+        setOpenModal,
+      }}
+    >
+      {children}
+    </TodoContext.Provider>
   );
 }
 
-export { TodoProvider, TodoContext };
+export { TodoContext, TodoProvider };

@@ -7,54 +7,46 @@ import { TodosLoading } from "../TodosLoding";
 import { EmptyTodos } from "../EmptyTodos";
 import { TodosError } from "../TodosError";
 import { TodoContext } from "../TodoContex";
+import { Modal } from "../modal";
+import React from "react";
 
 function AppUI() {
+  const {
+    openModal,
+    setOpenModal,
+    loading,
+    error,
+    searchedTodos,
+    completeTodo,
+    deleteTodo,
+  } = React.useContext(TodoContext);
   return (
     <>
       <TodoCounter />
-
       <TodoSearch />
-
-      <TodoContext.Consumer>
-        {({
-          loading,
-          error,
-          completedTodos,
-          totalTodos,
-          searchValue,
-          setSearchValue,
-          searchedTodos,
-          completeTodo,
-          deleteTodo,
-        }) => (
-          <TodoList>
-            {loading && (
-              <>
-                <TodosLoading />
-                <TodosLoading />
-                <TodosLoading />
-              </>
-            )}
-            {error && <TodosError />}
-            {!loading && searchedTodos.length === 0 && <EmptyTodos />}
-
-            {searchedTodos.map((todo) => (
-              <TodoItem
-                key={todo.text}
-                text={todo.text}
-                completed={todo.completed}
-                onComplete={() => completeTodo(todo.text)}
-                onDelete={() => deleteTodo(todo.text)}
-              />
-            ))}
-          </TodoList>
+      <TodoList>
+        {loading && (
+          <>
+            <TodosLoading />
+            <TodosLoading />
+            <TodosLoading />
+          </>
         )}
-      </TodoContext.Consumer>
-
-      {/* Componente para el botón de crear nueva tarea */}
+        {error && <TodosError />}
+        {!loading && searchedTodos.length === 0 && <EmptyTodos />}
+        {searchedTodos.map((todo) => (
+          <TodoItem
+            key={todo.text}
+            text={todo.text}
+            completed={todo.completed}
+            onComplete={() => completeTodo(todo.text)}
+            onDelete={() => deleteTodo(todo.text)}
+          />
+        ))}
+      </TodoList>
       <CreateTodoButton />
+      {openModal && <Modal>da click en el boton de mas.</Modal>}
     </>
   );
 }
-
 export { AppUI };
