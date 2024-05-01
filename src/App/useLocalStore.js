@@ -4,6 +4,7 @@ function useLocalStorage(itemName, initialValue) {
   const [item, setItem] = React.useState(initialValue);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(false);
+  const [sicronizedItem, setsicronizedItem] = React.useState(true);
 
   React.useEffect(() => {
     try {
@@ -19,26 +20,29 @@ function useLocalStorage(itemName, initialValue) {
 
       setItem(parsedItem);
       setLoading(false);
+      setsicronizedItem(true);
     } catch (error) {
       setLoading(false);
       setError(true);
     }
-  }, [itemName]); // Aseguramos que itemName e initialValue estén en las dependencias
+  }, [sicronizedItem]); // Aseguramos que itemName e initialValue estén en las dependencias
 
   // Función para guardar un nuevo item en el almacenamiento local
-  const saveItem = React.useCallback(
-    (newItem) => {
-      try {
-        localStorage.setItem(itemName, JSON.stringify(newItem));
-        setItem(newItem);
-      } catch (error) {
-        setError(true);
-      }
-    },
-    [itemName]
-  );
+  const saveItem = (newItem) => {
+    try {
+      const stringifiedItem = JSON.stringify(newItem);
+      localStorage.setItem(itemName, stringifiedItem);
+      setItem(newItem);
+    } catch (error) {
+      setError(true);
+    }
+  };
 
-  return { item, saveItem, loading, error };
+  const sincronized = () => {
+    setLoading(true);
+    setsicronizedItem(false);
+  };
+  return { item, saveItem, loading, error, sincronized };
 }
 
 export { useLocalStorage };

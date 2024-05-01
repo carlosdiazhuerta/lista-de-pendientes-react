@@ -1,8 +1,7 @@
 import React from "react";
 import "./TodoCounter.css";
 
-function TodoCounter({ completedTodos, totalTodos }) {
-  console.log(completedTodos, totalTodos);
+function TodoCounter({ completedTodos, totalTodos, loading }) {
   return (
     <>
       {totalTodos === completedTodos && (
@@ -11,7 +10,7 @@ function TodoCounter({ completedTodos, totalTodos }) {
         </h1>
       )}
       {totalTodos !== completedTodos && (
-        <h1 className="TodoCounter">
+        <h1 className={`TodoCounter ${loading && "TodoCounter--loading"}`}>
           <span> {completedTodos} </span>
           Tareas completadas de
           <span> {totalTodos} </span>

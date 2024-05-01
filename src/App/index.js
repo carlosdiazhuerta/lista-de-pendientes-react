@@ -10,10 +10,12 @@ import { TodosLoading } from "../TodosLoding";
 import { EmptyTodos } from "../EmptyTodos";
 import { TodoForm } from "../TodoForm";
 import { CreateTodoButton } from "../CreateTodoButton";
+import { ChangeAlertWithStoragelistener } from "../ChangeAlert/ChangeAlert.js";
 import { Modal } from "../modal";
 
 function App() {
   const {
+    sincronizedTodo,
     error,
     loading,
     searchedTodos,
@@ -37,10 +39,15 @@ function App() {
 
       <TodoList
         error={error}
+        searchText={searchValue}
+        totalTodos={totalTodos}
         loading={loading}
         searchedTodos={searchedTodos}
         onError={() => <TodosError />}
         onLoading={() => <TodosLoading />}
+        onEmptySearchResult={(searchText) => (
+          <p>no hay resultados para {searchText} </p>
+        )}
         onEmpty={() => <EmptyTodos />}
         render={(todo) => (
           <TodoItem
@@ -53,23 +60,6 @@ function App() {
         )}
       />
 
-      {/* 
-      <TodoList>
-        {error && <TodosError />}
-        {loading && <TodosLoading />}
-        {!loading && !searchedTodos.length && <EmptyTodos />}
-
-        {searchedTodos.map((todo) => (
-          <TodoItem
-            key={todo.text}
-            text={todo.text}
-            completed={todo.completed}
-            onComplete={() => completeTodo(todo.text)}
-            onDelete={() => deleteTodo(todo.text)}
-          />
-        ))}
-      </TodoList> */}
-
       {!!openModal && (
         <Modal>
           <TodoForm addTodo={addTodo} setOpenModal={setOpenModal} />
@@ -77,6 +67,7 @@ function App() {
       )}
 
       <CreateTodoButton setOpenModal={setOpenModal} />
+      <ChangeAlertWithStoragelistener sincronized={sincronizedTodo} />
     </React.Fragment>
   );
 }
